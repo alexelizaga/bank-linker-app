@@ -1,8 +1,9 @@
+import { CSSProperties } from 'react';
 import { useLocation } from 'react-router-dom';
 import {BankLoginForm} from 'react-bank-linker';
 
 import '../node_modules/bank-linker/dist/style.css';
-import { CSSProperties } from 'react';
+
 
 function App() {
   const location = useLocation();
