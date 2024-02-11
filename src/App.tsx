@@ -2,21 +2,23 @@ import { CSSProperties } from 'react';
 import { useLocation } from 'react-router-dom';
 import {BankLoginForm} from 'react-bank-linker';
 
-import '../node_modules/bank-linker/dist/style.css';
-
+import '../node_modules/react-bank-linker/dist/style.css';
 
 function App() {
   const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
 
-  const clientId = new URLSearchParams(location.search).get('clientId') || '';
-  const bankId = new URLSearchParams(location.search).get('bankId') || '';
-  const color = '#' + (new URLSearchParams(location.search).get('color') || '00796b');
-  const btn = new URLSearchParams(location.search).get('btn') || 'Add';
-  const apiKey = new URLSearchParams(location.search).get('apiKey') || '';
+  const paramsObjet: Record<string, string> = {};
+
+  for (const [clave, valor] of searchParams.entries()) {
+    paramsObjet[clave] = valor;
+  }
+  
+  const color = '#' + (paramsObjet['color'] || '00796b');
 
   const apiUrl = import.meta.env.VITE_BANKLINKER_URL || '';
 
-  if (!clientId || !bankId || !apiKey) return (
+  if (!paramsObjet['clientId'] || !paramsObjet['bankId'] || !paramsObjet['apiKey']) return (
     <>
       <p style={p}>apiKey, clientId and bankId required</p>
     </>
@@ -24,13 +26,9 @@ function App() {
 
   return (
     <BankLoginForm
-      apiKey={apiKey}
-      apiUrl={apiUrl}
-      bankId={bankId}
-      btn={btn}
-      clientId={clientId}
-      color={color}
-    />
+    {...paramsObjet}
+    apiUrl={apiUrl}
+    color={color}    />
   )
 }
 
